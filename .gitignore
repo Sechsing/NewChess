@@ -1,0 +1,30 @@
+# Unity generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Oo]bj/
+[Mm]emoryCaptures/
+
+# Unity cache files
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+
+# Unity Version Control (Plastic SCM)
+.plastic/
+PlasticSCM/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
