@@ -5,7 +5,6 @@ public class Bishop : Piece
 {
     internal Bishop(Player player) : base(player) { }
 
-
     internal override bool IsValidGameMove(Move move, ChessGame board)
     {
         // No need to do null checks here, this method isn't public and isn't annotated with nullable.

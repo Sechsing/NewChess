@@ -146,6 +146,26 @@ public class ChessGame : IDeepCloneable<ChessGame>
         return true;
     }
 
+    public bool MakeFire(Fire fire)
+    {
+        if (fire == null) throw new ArgumentNullException(nameof(fire));
+
+        Piece? piece = this[fire.Source.File, fire.Source.Rank];
+        if (piece is not Bombard bombard || piece.Owner != fire.Player || fire.Player != WhoseTurn)
+            return false;
+
+        if (!bombard.IsValidFire(fire, this))
+            return false;
+
+        // Destroy the piece on target square
+        Board[(int)fire.Target.Rank][(int)fire.Target.File] = null;
+
+        WhoseTurn = ChessUtilities.RevertPlayer(fire.Player);
+        SetGameState();
+
+        return true;
+    }
+
     private void SetCastleStatus(Move move, Piece piece)
     {
         if (piece.Owner == Player.White && piece is King)
