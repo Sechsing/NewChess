@@ -51,6 +51,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
         var blackKing = new King(Player.Black);
         Board = new Piece?[][]
         {
+            new Piece?[] { null, null, new Bombard(Player.White), null, null, new Bombard(Player.White), null, null },
             new Piece?[] { whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, whiteBishop, whiteKnight, whiteRook },
             new Piece?[] { whitePawn, whitePawn, whitePawn, whitePawn, whitePawn, whitePawn, whitePawn, whitePawn },
             new Piece?[] { null, null, null, null, null, null, null, null },
@@ -58,7 +59,8 @@ public class ChessGame : IDeepCloneable<ChessGame>
             new Piece?[] { null, null, null, null, null, null, null, null },
             new Piece?[] { null, null, null, null, null, null, null, null },
             new Piece?[] { blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn},
-            new Piece?[] { blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook}
+            new Piece?[] { blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook},
+            new Piece?[] { null, null, new Bombard(Player.Black), null, null, new Bombard(Player.Black), null, null }
         };
     }
 
@@ -116,7 +118,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
 
         if (piece is Pawn)
         {
-            if ((move.Player == Player.White && move.Destination.Rank == Rank.Eighth) ||
+            if ((move.Player == Player.White && move.Destination.Rank == Rank.Tenth) ||
                 (move.Player == Player.Black && move.Destination.Rank == Rank.First))
             {
                 piece = move.PromoteTo switch
@@ -153,13 +155,13 @@ public class ChessGame : IDeepCloneable<ChessGame>
         }
 
         if (piece.Owner == Player.White && piece is Rook &&
-            move.Source.File == File.A && move.Source.Rank == Rank.First)
+            move.Source.File == File.A && move.Source.Rank == Rank.Second)
         {
             CanWhiteCastleQueenSide= false;
         }
 
         if (piece.Owner == Player.White && piece is Rook &&
-            move.Source.File == File.H && move.Source.Rank == Rank.First)
+            move.Source.File == File.H && move.Source.Rank == Rank.Second)
         {
             CanWhiteCastleKingSide = false;
         }
@@ -171,13 +173,13 @@ public class ChessGame : IDeepCloneable<ChessGame>
         }
 
         if (piece.Owner == Player.Black && piece is Rook &&
-            move.Source.File == File.A && move.Source.Rank == Rank.Eighth)
+            move.Source.File == File.A && move.Source.Rank == Rank.Ninth)
         {
             CanBlackCastleQueenSide= false;
         }
 
         if (piece.Owner == Player.Black && piece is Rook &&
-            move.Source.File == File.H && move.Source.Rank == Rank.Eighth)
+            move.Source.File == File.H && move.Source.Rank == Rank.Ninth)
         {
             CanBlackCastleKingSide = false;
         }
@@ -325,17 +327,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
         
         return new ChessGame
         {
-            Board = new Piece?[][]
-            {
-                new Piece?[] { Board[0][0], Board[0][1], Board[0][2], Board[0][3], Board[0][4], Board[0][5], Board[0][6], Board[0][7] },
-                new Piece?[] { Board[1][0], Board[1][1], Board[1][2], Board[1][3], Board[1][4], Board[1][5], Board[1][6], Board[1][7] },
-                new Piece?[] { Board[2][0], Board[2][1], Board[2][2], Board[2][3], Board[2][4], Board[2][5], Board[2][6], Board[2][7] },
-                new Piece?[] { Board[3][0], Board[3][1], Board[3][2], Board[3][3], Board[3][4], Board[3][5], Board[3][6], Board[3][7] },
-                new Piece?[] { Board[4][0], Board[4][1], Board[4][2], Board[4][3], Board[4][4], Board[4][5], Board[4][6], Board[4][7] },
-                new Piece?[] { Board[5][0], Board[5][1], Board[5][2], Board[5][3], Board[5][4], Board[5][5], Board[5][6], Board[5][7] },
-                new Piece?[] { Board[6][0], Board[6][1], Board[6][2], Board[6][3], Board[6][4], Board[6][5], Board[6][6], Board[6][7] },
-                new Piece?[] { Board[7][0], Board[7][1], Board[7][2], Board[7][3], Board[7][4], Board[7][5], Board[4][6], Board[7][7] },
-            },
+            Board = Board.Select(row => row.ToArray()).ToArray(),
             Moves = Moves.Select(m => m.DeepClone()).ToList(),
             GameState = GameState,
             WhoseTurn = WhoseTurn,

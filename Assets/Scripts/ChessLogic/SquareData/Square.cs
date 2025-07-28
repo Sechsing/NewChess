@@ -20,7 +20,7 @@ internal class Parser
 
     private static Rank ParseRank(char rank)
     {
-        if (rank < '1' || rank > '8')
+        if (rank < '1' || rank > '10')
         {
             throw new ArgumentOutOfRangeException(nameof(rank));
         }

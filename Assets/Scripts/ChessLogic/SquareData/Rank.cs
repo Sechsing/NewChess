@@ -20,4 +20,8 @@ public enum Rank
     Seventh,
     /// <summary>Represents the eighth rank.</summary>
     Eighth
+    /// <summary>Represents the ninth rank.</summary>
+    Ninth
+    /// <summary>Represents the tenth rank.</summary>
+    Tenth
 }
