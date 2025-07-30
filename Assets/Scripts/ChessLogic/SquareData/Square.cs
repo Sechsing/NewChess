@@ -18,13 +18,14 @@ internal class Parser
         return (File)(file - 'A');
     }
 
-    private static Rank ParseRank(char rank)
+    private static Rank ParseRank(string rankStr)
     {
-        if (rank < '1' || rank > '10')
+        // Changed char type to string type for the parameter rankStr
+        if (!int.TryParse(rankStr, out int rank) || rank < 1 || rank > 10)
         {
-            throw new ArgumentOutOfRangeException(nameof(rank));
+            throw new ArgumentOutOfRangeException(nameof(rankStr), "Rank must be between 1 and 10.");
         }
-        return (Rank)(rank - '1');
+        return (Rank)(rank - 1); 
     }
 
     public static Square Parse(string square)
@@ -37,8 +38,8 @@ internal class Parser
         }
 
         File file = ParseFile(square[0]);
-        Rank rank = ParseRank(square[1]);
-
+        Rank rank = ParseRank(square.Substring(1));
+        
         return new Square(file, rank);
     }
 
@@ -50,7 +51,7 @@ internal class Parser
         }
 
         File file = ParseFile(square[0]);
-        Rank rank = ParseRank(square[1]);
+        Rank rank = ParseRank(square.Slice(1).ToString());
 
         return new Square(file, rank);
     }

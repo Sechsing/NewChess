@@ -19,9 +19,9 @@ public enum Rank
     /// <summary>Represents the seventh rank.</summary>
     Seventh,
     /// <summary>Represents the eighth rank.</summary>
-    Eighth
+    Eighth,
     /// <summary>Represents the ninth rank.</summary>
-    Ninth
+    Ninth,
     /// <summary>Represents the tenth rank.</summary>
     Tenth
 }
