@@ -34,6 +34,7 @@ public class BoardGenerator : MonoBehaviour
         InitializePrefabDictionaries();
         GenerateBoard();
         PlacePiecesFromLogic(new ChessGame());
+        CenterCamera();
     }
 
     void InitializePrefabDictionaries()
@@ -88,13 +89,37 @@ public class BoardGenerator : MonoBehaviour
                 var piece = game.Board[row][col];
                 if (piece == null) continue;
 
-                GameObject prefab = piece.Owner == Player.White
+                bool isWhite = piece.Owner == Player.White;
+                GameObject prefab = isWhite
                     ? whitePiecePrefabs[piece.GetType()]
                     : blackPiecePrefabs[piece.GetType()];
 
-                Vector3 position = new Vector3(col * size, row * size, -1); // Slight z offset to appear above squares
-                Instantiate(prefab, position, Quaternion.identity, transform);
+                Vector3 position = new Vector3(col * size, row * size, -1);
+
+                Quaternion rotation = Quaternion.identity;
+
+                if (piece is Bombard)
+                {
+                    rotation = isWhite
+                        ? Quaternion.Euler(0, 0, 90)
+                        : Quaternion.Euler(0, 0, -90);
+                }
+
+                Instantiate(prefab, position, rotation, transform);
             }
         }
+    }
+
+    void CenterCamera()
+    {
+        float squareSize = lightSquarePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
+        float boardWidth = 8 * squareSize;
+        float boardHeight = 10 * squareSize;
+
+        // Center the camera on the middle of the board
+        Camera.main.transform.position = new Vector3(boardWidth / 2f, boardHeight / 2f, -10f);
+
+        // Fit the whole board vertically
+        Camera.main.orthographicSize = boardHeight / 2f + 0.5f;
     }
 }
