@@ -24,8 +24,8 @@ public class King : Piece
         }
         // Not castle move.
         if (absDeltaX != 2 || absDeltaY != 0 || move.Source.File != File.E ||
-            (move.Player == Player.White && move.Source.Rank != Rank.First) ||
-            (move.Player == Player.Black && move.Source.Rank != Rank.Eighth) ||
+            (move.Player == Player.White && move.Source.Rank != Rank.Second) ||
+            (move.Player == Player.Black && move.Source.Rank != Rank.Ninth) ||
             (board.GameState == GameState.BlackInCheck || board.GameState == GameState.WhiteInCheck))
         {
             return false;
@@ -33,38 +33,38 @@ public class King : Piece
 
         // White king-side castle move.
         if (move.Player == Player.White && move.Destination.File == File.G && board.CanWhiteCastleKingSide &&
-            !board.IsTherePieceInBetween(move.Source, new Square(File.H, Rank.First)) &&
-            new Rook(Player.White).Equals(board[File.H, Rank.First]))
+            !board.IsTherePieceInBetween(move.Source, new Square(File.H, Rank.Second)) &&
+            new Rook(Player.White).Equals(board[File.H, Rank.Second]))
         {
             return !board.PlayerWillBeInCheck(
-                new Move(move.Source, new Square(File.F, Rank.First), move.Player));
+                new Move(move.Source, new Square(File.F, Rank.Second), move.Player));
         }
 
         // Black king-side castle move.
         if (move.Player == Player.Black && move.Destination.File == File.G && board.CanBlackCastleKingSide &&
-            !board.IsTherePieceInBetween(move.Source, new Square(File.H, Rank.Eighth)) &&
-            new Rook(Player.Black).Equals(board[File.H, Rank.Eighth]))
+            !board.IsTherePieceInBetween(move.Source, new Square(File.H, Rank.Ninth)) &&
+            new Rook(Player.Black).Equals(board[File.H, Rank.Ninth]))
         {
             return !board.PlayerWillBeInCheck(
-                new Move(move.Source, new Square(File.F, Rank.Eighth), move.Player));
+                new Move(move.Source, new Square(File.F, Rank.Ninth), move.Player));
         }
 
         // White queen-side castle move.
         if (move.Player == Player.White && move.Destination.File == File.C && board.CanWhiteCastleQueenSide &&
-            !board.IsTherePieceInBetween(move.Source, new Square(File.A, Rank.First)) &&
-            new Rook(Player.White).Equals(board[File.A, Rank.First]))
+            !board.IsTherePieceInBetween(move.Source, new Square(File.A, Rank.Second)) &&
+            new Rook(Player.White).Equals(board[File.A, Rank.Second]))
         {
             return !board.PlayerWillBeInCheck(
-                new Move(move.Source, new Square(File.D, Rank.First), move.Player));
+                new Move(move.Source, new Square(File.D, Rank.Second), move.Player));
         }
 
         // Black queen-side castle move.
         if (move.Player == Player.Black && move.Destination.File == File.C && board.CanBlackCastleQueenSide &&
-            !board.IsTherePieceInBetween(move.Source, new Square(File.A, Rank.Eighth)) &&
-            new Rook(Player.Black).Equals(board[File.A, Rank.Eighth]))
+            !board.IsTherePieceInBetween(move.Source, new Square(File.A, Rank.Ninth)) &&
+            new Rook(Player.Black).Equals(board[File.A, Rank.Ninth]))
         {
             return !board.PlayerWillBeInCheck(
-                new Move(move.Source, new Square(File.D, Rank.Eighth), move.Player));
+                new Move(move.Source, new Square(File.D, Rank.Ninth), move.Player));
         }
 
         return false;

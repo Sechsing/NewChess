@@ -14,10 +14,10 @@ public class Bombard : Piece
 
     internal bool IsValidFire(Fire fire, ChessGame board)
     {
-        int forward = fire.Player == Player.White ? 2 : -2;
+        int forwardRange = fire.Player == Player.White ? 3 : -3;
 
-        return ((fire.GetAbsDeltaX() == 0) && (fire.GetDeltaY() == forward) ||
-            (fire.GetAbsDeltaX() == 2) && (fire.GetDeltaY() == forward)) &&
+        return ((fire.GetAbsDeltaX() == 0) && (fire.GetDeltaY() == forwardRange) ||
+            (fire.GetAbsDeltaX() == 2) && (fire.GetDeltaY() == forwardRange)) &&
                 !board.IsTherePieceInBetween(fire.Source, fire.Target);
     }
 }
