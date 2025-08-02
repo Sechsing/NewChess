@@ -43,8 +43,8 @@ public class Pawn : Piece
         if ((move.Player == Player.White && deltaY == 1 && absDeltaX == 1) ||
             (move.Player == Player.Black && deltaY == -1 && absDeltaX == 1))
         {
-            if ((move.Player == Player.White && move.Destination.Rank == Rank.Eighth) ||
-                (move.Player == Player.Black && move.Destination.Rank == Rank.First))
+            if ((move.Player == Player.White && move.Destination.Rank == Rank.Ninth) ||
+                (move.Player == Player.Black && move.Destination.Rank == Rank.Second))
             {
                 return PawnMoveType.Capture | PawnMoveType.Promotion;
             }
@@ -101,7 +101,7 @@ public class Pawn : Piece
             Move lastMove = board.Moves.Last();
             Piece? lastMovedPiece = board[lastMove.Destination.File, lastMove.Destination.Rank];
 
-            if (lastMovedPiece is Pawn || 
+            if (!(lastMovedPiece is Pawn) || 
                 !GetPawnMoveType(lastMove).Contains(PawnMoveType.TwoSteps) || lastMove.Destination.File != move.Destination.File ||
                 lastMove.Destination.Rank != move.Source.Rank)
             {
@@ -116,7 +116,7 @@ public class Pawn : Piece
             return !clone.PlayerWillBeInCheck(move);
         }
 
-        throw new Exception("Unexpected PawnMoveType."); // Should never happen. If it happened, this it's a bug.
+        throw new Exception("Unexpected PawnMoveType."); // Should never happen. If it happened, then it's a bug.
 
 
     }
