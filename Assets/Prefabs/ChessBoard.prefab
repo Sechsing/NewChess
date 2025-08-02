@@ -41,9 +41,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2855477640576487345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae8db2cd53c6f724da30e6f06a88bd85, type: 3}
+  m_Script: {fileID: 11500000, guid: d133d395a28d5504d8dd754a571f7a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lightSquarePrefab: {fileID: 6696521255884828071, guid: 59529c6b3bd9b4a4bb089df1b099e805, type: 3}
   darkSquarePrefab: {fileID: 8481261097164664881, guid: b3630717410f5f946b0ae224d000f748, type: 3}
-  squareSize: 1
+  whitePawnPrefab: {fileID: 3127662724552808704, guid: 2a7d09132e5154049bd6065621041574, type: 3}
+  blackPawnPrefab: {fileID: 6154335436579328498, guid: 2d9ca7cdc63b0a84e83e9385253cfbb4, type: 3}
+  whiteRookPrefab: {fileID: 18305143404479230, guid: f279c8ecc5707814797581f083d02e63, type: 3}
+  blackRookPrefab: {fileID: 1247171174874879511, guid: cbdd98aa14fc16849a509d86ce18e8a3, type: 3}
+  whiteKnightPrefab: {fileID: 3987371602460792527, guid: 926726a0f7730c14f891e3a4f37bcc2d, type: 3}
+  blackKnightPrefab: {fileID: 5482068573266799818, guid: 4630c8e9a0ae8a341bbac8286d1fe476, type: 3}
+  whiteBishopPrefab: {fileID: 5095119433107266425, guid: 3032ac4be4ce28243b8b7be33dc80885, type: 3}
+  blackBishopPrefab: {fileID: 6709583360046011701, guid: 151fa650cd9b1ab4cb466d922e65d6be, type: 3}
+  whiteQueenPrefab: {fileID: 7136880108718410873, guid: e423928e7471ee84f8609f2152e8d13f, type: 3}
+  blackQueenPrefab: {fileID: 6276608809827607618, guid: df18a6e6b20ad9242bf920c66633f0e4, type: 3}
+  whiteKingPrefab: {fileID: 5487174727700691795, guid: 2ea2ad15d2028d141bffb2ce48b61936, type: 3}
+  blackKingPrefab: {fileID: 1156833867037608260, guid: d57672628ca19c74da8f95f937d572b6, type: 3}
+  whiteBombardPrefab: {fileID: 77631068202098651, guid: 329a9bed198124243b40e7eac6a1c262, type: 3}
+  blackBombardPrefab: {fileID: 8085282697595867133, guid: 7d502b3eae8a4a94ea1066c934745da6, type: 3}
