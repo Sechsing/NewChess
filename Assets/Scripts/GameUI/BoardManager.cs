@@ -35,6 +35,8 @@ public class BoardManager : MonoBehaviour
     private int numRows;
     private int numCols;
 
+    public float SquareSize => squareSize;
+
     void Start()
     {
         squareSize = lightSquarePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
@@ -83,7 +85,11 @@ public class BoardManager : MonoBehaviour
             {
                 GameObject prefab = (row + col) % 2 == 0 ? lightSquarePrefab : darkSquarePrefab;
                 Vector2 position = new Vector2(col * squareSize, row * squareSize);
-                Instantiate(prefab, position, Quaternion.identity, transform);
+                GameObject square = Instantiate(prefab, position, Quaternion.identity, transform);
+                square.AddComponent<BoxCollider2D>(); 
+                BoardCell cell = square.AddComponent<BoardCell>();
+                cell.row = row;
+                cell.col = col;
             }
         }
     }
@@ -157,7 +163,12 @@ public class BoardManager : MonoBehaviour
             ? Quaternion.Euler(0, 0, piece.Owner == Player.White ? 90 : -90)
             : Quaternion.identity;
 
-        return Instantiate(prefab, new Vector3(col * squareSize, row * squareSize, -1), rotation, transform);
+        GameObject instance = Instantiate(prefab, new Vector3(col * squareSize, row * squareSize, -1), rotation, transform);
+        instance.AddComponent<BoxCollider2D>();
+        BoardCell cell = instance.AddComponent<BoardCell>();
+        cell.row = row;
+        cell.col = col;
+        return instance;
     }
 
     bool IsGameObjectCorrect(GameObject go, Piece piece)

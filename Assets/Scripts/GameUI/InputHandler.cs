@@ -13,12 +13,16 @@ public class InputHandler : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int col = Mathf.FloorToInt(worldPos.x);
-            int row = Mathf.FloorToInt(worldPos.y);
+            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
 
-            if (!IsInsideBoard(col, row)) return;
-
-            HandleClick(col, row);
+            if (hit.collider != null)
+            {
+                BoardCell cell = hit.collider.GetComponent<BoardCell>();
+                if (cell != null)
+                {
+                    HandleClick(cell.col, cell.row);
+                }
+            }
         }
     }
 
@@ -32,7 +36,6 @@ public class InputHandler : MonoBehaviour
 
         if (selectedSquare == null)
         {
-            // Selecting a piece
             Piece? piece = boardManager.game.Board[row][col];
             if (piece != null && piece.Owner == boardManager.game.WhoseTurn)
             {
@@ -42,7 +45,6 @@ public class InputHandler : MonoBehaviour
         }
         else
         {
-            // Attempt to move or fire
             Vector2Int from = selectedSquare.Value;
             Vector2Int to = new Vector2Int(col, row);
 
@@ -85,10 +87,5 @@ public class InputHandler : MonoBehaviour
                 selectedSquare = null;
             }
         }
-    }
-
-    private bool IsInsideBoard(int col, int row)
-    {
-        return col >= 0 && col < 8 && row >= 0 && row < 10;
     }
 }
