@@ -24,8 +24,8 @@ public class Pawn : Piece
         if ((move.Player == Player.White && deltaY == 1 && absDeltaX == 0) ||
             move.Player == Player.Black && deltaY == -1 && absDeltaX == 0)
         {
-            if ((move.Player == Player.White && move.Destination.Rank == Rank.Eighth) ||
-                (move.Player == Player.Black && move.Destination.Rank == Rank.First))
+            if ((move.Player == Player.White && move.Destination.Rank == Rank.Ninth) ||
+                (move.Player == Player.Black && move.Destination.Rank == Rank.Second))
             {
                 return PawnMoveType.OneStep | PawnMoveType.Promotion;
             }
@@ -33,8 +33,8 @@ public class Pawn : Piece
         }
 
         // Check two step move from starting position.
-        if ((move.Player == Player.White && deltaY == 2 && absDeltaX == 0 && move.Source.Rank == Rank.Second) ||
-            (move.Player == Player.Black && deltaY == -2 && absDeltaX == 0 && move.Source.Rank == Rank.Seventh))
+        if ((move.Player == Player.White && deltaY == 2 && absDeltaX == 0 && move.Source.Rank == Rank.Third) ||
+            (move.Player == Player.Black && deltaY == -2 && absDeltaX == 0 && move.Source.Rank == Rank.Eighth))
         {
             return PawnMoveType.TwoSteps;
         }
