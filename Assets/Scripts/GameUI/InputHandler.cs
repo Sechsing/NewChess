@@ -6,7 +6,12 @@ using ChessSharp.Pieces;
 public class InputHandler : MonoBehaviour
 {
     public BoardManager boardManager;
+    public PromotionPanel promotionPanel; // Reference to your promotion UI
+
     private Vector2Int? selectedSquare = null;
+    private Square pendingSource;
+    private Square pendingTarget;
+    private Player pendingPlayer;
 
     private void Update()
     {
@@ -53,39 +58,72 @@ public class InputHandler : MonoBehaviour
             Player currentPlayer = boardManager.game.WhoseTurn;
             Piece? piece = boardManager.game[source.File, source.Rank];
 
-            bool moveSuccess = false;
+            selectedSquare = null;
 
             if (piece is Bombard)
             {
                 Fire fire = new Fire(source, target, currentPlayer);
-                moveSuccess = boardManager.game.MakeFire(fire);
-                if (moveSuccess)
+                if (boardManager.game.MakeFire(fire))
+                {
                     Debug.Log("Bombard fired!");
+                    boardManager.UpdateBoardVisuals();
+                    return;
+                }
             }
 
-            if (!moveSuccess)
+            // Check for pawn promotion
+            if (piece is Pawn)
             {
-                Move move = new Move(source, target, currentPlayer);
-                moveSuccess = boardManager.game.MakeMove(move, false);
-                if (moveSuccess)
-                    Debug.Log("Piece moved.");
+                bool isPromotion =
+                    (currentPlayer == Player.White && target.Rank == Rank.Ninth) ||
+                    (currentPlayer == Player.Black && target.Rank == Rank.Second);
+
+                if (isPromotion)
+                {
+                    // Store move data until user picks promotion piece
+                    pendingSource = source;
+                    pendingTarget = target;
+                    pendingPlayer = currentPlayer;
+
+                    Debug.Log("Promotion panel shown.");
+                    promotionPanel.Show(currentPlayer, OnPromotionSelected);
+                    return;
+                }
             }
 
-            if (moveSuccess)
+            // Regular move (non-promotion)
+            Move move = new Move(source, target, currentPlayer);
+            if (boardManager.game.MakeMove(move, false))
             {
                 boardManager.UpdateBoardVisuals();
-                selectedSquare = null;
-
+                Debug.Log("Piece moved.");
                 if (boardManager.game.GameState != GameState.NotCompleted)
-                {
                     Debug.Log($"Game Over: {boardManager.game.GameState}");
-                }
             }
             else
             {
                 Debug.Log("Invalid move.");
-                selectedSquare = null;
             }
+        }
+    }
+
+    // Callback from promotion panel
+    private void OnPromotionSelected(PawnPromotion chosenPiece)
+    {
+        Move move = new Move(pendingSource, pendingTarget, pendingPlayer, chosenPiece);
+
+
+        if (boardManager.game.MakeMove(move, false))
+        {
+            boardManager.UpdateBoardVisuals();
+            Debug.Log("Pawn promoted and moved.");
+
+            if (boardManager.game.GameState != GameState.NotCompleted)
+                Debug.Log($"Game Over: {boardManager.game.GameState}");
+        }
+        else
+        {
+            Debug.Log("Invalid promotion move.");
         }
     }
 }

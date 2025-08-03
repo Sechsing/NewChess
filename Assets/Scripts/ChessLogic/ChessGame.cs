@@ -118,8 +118,8 @@ public class ChessGame : IDeepCloneable<ChessGame>
 
         if (piece is Pawn)
         {
-            if ((move.Player == Player.White && move.Destination.Rank == Rank.Tenth) ||
-                (move.Player == Player.Black && move.Destination.Rank == Rank.First))
+            if ((move.Player == Player.White && move.Destination.Rank == Rank.Ninth) ||
+                (move.Player == Player.Black && move.Destination.Rank == Rank.Second))
             {
                 piece = move.PromoteTo switch
                 {
