@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 74
+  controlID: 40
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 38
+  controlID: 41
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -192,13 +192,13 @@ MonoBehaviour:
     height: 770.8
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 12}
+  m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 12}
   - {fileID: 13}
   - {fileID: 14}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -311,7 +311,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 14fbffff16fbffff
+      m_ExpandedIDs: 16fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -730,9 +730,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.8661754, y: 1.0481803, z: -0.089625135}
+    m_Target: {x: 0.8224235, y: 0.22938278, z: -0.0019077617}
     speed: 2
-    m_Value: {x: 0.8661754, y: 1.0481803, z: -0.089625135}
+    m_Value: {x: 0.8224235, y: 0.22938278, z: -0.0019077617}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -782,9 +782,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1.2906725
+    m_Target: 2.7201786
     speed: 2
-    m_Value: 1.2906725
+    m_Value: 2.7201786
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -887,18 +887,18 @@ MonoBehaviour:
       y: 21
       width: 793.2
       height: 728.8
-    m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 396.59998, y: 364.40002}
+    m_Scale: {x: 0.8672023, y: 0.8672023}
+    m_Translation: {x: 396.59998, y: 364.4}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -396.59998
-      y: -364.40002
-      width: 793.2
-      height: 728.8
+      x: -457.3327
+      y: -420.20184
+      width: 914.6655
+      height: 840.4037
     m_MinimalGUI: 1
   m_defaultScale: 0.51640624
   m_LastWindowPixelSize: {x: 991.5, y: 937.25}
