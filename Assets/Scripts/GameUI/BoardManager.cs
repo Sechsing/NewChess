@@ -2,6 +2,7 @@ using ChessSharp;
 using ChessSharp.Pieces;
 using ChessSharp.SquareData;
 using TMPro;
+using TMPro.EditorUtilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,8 @@ public class BoardManager : MonoBehaviour
 
     private GameObject[,] cells;
     private GameObject?[,] pieceObjects;
+
+    private string fileLabels = "ABCDEFGH";
 
     private float squareSize;
     private int numRows;
@@ -109,11 +112,9 @@ public class BoardManager : MonoBehaviour
 
     void GenerateBoardLabels()
     {
-        string letters = "ABCDEFGH";
-
         for (int col = 0; col < numCols; col++)
         {
-            string letter = letters[col].ToString();
+            string letter = fileLabels[col].ToString();
             CreateLabel(letter, new Vector3(col * squareSize + 0.09f, -0.4f * squareSize + 0.005f, -1));
         }
 
@@ -132,12 +133,16 @@ public class BoardManager : MonoBehaviour
 
         TextMeshPro tmp = go.AddComponent<TextMeshPro>();
         tmp.text = text;
-        tmp.fontSize = 0.5f; 
+        tmp.fontSize = 0.5f;
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.sortingOrder = 10;
-        tmp.fontMaterial = new Material(tmp.fontMaterial);
-        tmp.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.2f);
-        tmp.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
+
+        Material mat = new Material(tmp.fontMaterial);
+        mat.EnableKeyword("OUTLINE_ON");
+        mat.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.1f);
+        mat.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
+
+        tmp.fontMaterial = mat;
     }
 
     void InstantiatePieces()
