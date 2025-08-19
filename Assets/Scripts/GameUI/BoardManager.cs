@@ -1,6 +1,7 @@
 using ChessSharp;
 using ChessSharp.Pieces;
 using ChessSharp.SquareData;
+using TMPro;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,25 +31,33 @@ public class BoardManager : MonoBehaviour
     private Dictionary<Type, GameObject> whitePiecePrefabs;
     private Dictionary<Type, GameObject> blackPiecePrefabs;
 
+    private GameObject[,] cells;
     private GameObject?[,] pieceObjects;
+
     private float squareSize;
     private int numRows;
     private int numCols;
 
     public float SquareSize => squareSize;
+    public int NumRows => numRows;
+    public int NumCols => numCols;
 
-    void Start()
+    void Awake()
     {
         squareSize = lightSquarePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
         InitializePrefabDictionaries();
-        
+
         game = new ChessGame();
         numRows = game.Board.Length;
         numCols = game.Board[0].Length;
         pieceObjects = new GameObject?[numRows, numCols];
+    }
 
+    void Start()
+    {
         GenerateBoard();
-        DrawInitialBoard();
+        GenerateBoardLabels();
+        InstantiatePieces();
         CenterCamera();
     }
 
@@ -79,6 +88,8 @@ public class BoardManager : MonoBehaviour
 
     void GenerateBoard()
     {
+        cells = new GameObject[numRows, numCols];
+
         for (int row = 0; row < numRows; row++)
         {
             for (int col = 0; col < numCols; col++)
@@ -86,15 +97,50 @@ public class BoardManager : MonoBehaviour
                 GameObject prefab = (row + col) % 2 == 0 ? lightSquarePrefab : darkSquarePrefab;
                 Vector2 position = new Vector2(col * squareSize, row * squareSize);
                 GameObject square = Instantiate(prefab, position, Quaternion.identity, transform);
-                square.AddComponent<BoxCollider2D>(); 
+                square.AddComponent<BoxCollider2D>();
                 BoardCell cell = square.AddComponent<BoardCell>();
                 cell.row = row;
                 cell.col = col;
+
+                cells[row, col] = square;
             }
         }
     }
 
-    void DrawInitialBoard()
+    void GenerateBoardLabels()
+    {
+        string letters = "ABCDEFGH";
+
+        for (int col = 0; col < numCols; col++)
+        {
+            string letter = letters[col].ToString();
+            CreateLabel(letter, new Vector3(col * squareSize + 0.09f, -0.4f * squareSize + 0.005f, -1));
+        }
+
+        for (int row = 0; row < numRows; row++)
+        {
+            string number = (row + 1).ToString();
+            CreateLabel(number, new Vector3(-0.4f * squareSize + 0.005f, row * squareSize + 0.075f , -1));
+        }
+    }
+
+    void CreateLabel(string text, Vector3 pos)
+    {
+        GameObject go = new GameObject("Label" + text);
+        go.transform.SetParent(transform, false);
+        go.transform.position = pos;
+
+        TextMeshPro tmp = go.AddComponent<TextMeshPro>();
+        tmp.text = text;
+        tmp.fontSize = 0.5f; 
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.sortingOrder = 10;
+        tmp.fontMaterial = new Material(tmp.fontMaterial);
+        tmp.fontMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.2f);
+        tmp.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
+    }
+
+    void InstantiatePieces()
     {
         for (int row = 0; row < numRows; row++)
         {
@@ -114,7 +160,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void UpdateBoardVisuals()
+    public void UpdateBoardByMove()
     {
         for (int row = 0; row < numRows; row++)
         {

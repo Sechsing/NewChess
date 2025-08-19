@@ -588,6 +588,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6276608809827607618, guid: df18a6e6b20ad9242bf920c66633f0e4, type: 3}
     - target: {fileID: 7016281729206997202, guid: d8e36238fd754cb4684c23af061ea458, type: 3}
+      propertyPath: coordinateLabels
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016281729206997202, guid: d8e36238fd754cb4684c23af061ea458, type: 3}
       propertyPath: whiteQueenPrefab
       value: 
       objectReference: {fileID: 7136880108718410873, guid: e423928e7471ee84f8609f2152e8d13f, type: 3}
@@ -781,6 +785,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 3665237711343990882, guid: 8c0c6a0a780fc6c409b7ce88550ef6eb, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5807082463245949539, guid: 8c0c6a0a780fc6c409b7ce88550ef6eb, type: 3}
       propertyPath: m_CullTransparentMesh
       value: 1

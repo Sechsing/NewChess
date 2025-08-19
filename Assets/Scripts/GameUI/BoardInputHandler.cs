@@ -66,7 +66,7 @@ public class InputHandler : MonoBehaviour
                 if (boardManager.game.MakeFire(fire))
                 {
                     Debug.Log("Bombard fired!");
-                    boardManager.UpdateBoardVisuals();
+                    boardManager.UpdateBoardByMove();
                     return;
                 }
             }
@@ -95,7 +95,7 @@ public class InputHandler : MonoBehaviour
             Move move = new Move(source, target, currentPlayer);
             if (boardManager.game.MakeMove(move, false))
             {
-                boardManager.UpdateBoardVisuals();
+                boardManager.UpdateBoardByMove();
                 Debug.Log("Piece moved.");
                 if (boardManager.game.GameState != GameState.NotCompleted)
                     Debug.Log($"Game Over: {boardManager.game.GameState}");
@@ -115,7 +115,7 @@ public class InputHandler : MonoBehaviour
 
         if (boardManager.game.MakeMove(move, false))
         {
-            boardManager.UpdateBoardVisuals();
+            boardManager.UpdateBoardByMove();
             Debug.Log("Pawn promoted and moved.");
 
             if (boardManager.game.GameState != GameState.NotCompleted)
