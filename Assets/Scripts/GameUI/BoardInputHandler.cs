@@ -90,14 +90,38 @@ public class InputHandler : MonoBehaviour
 
                 if (isPromotion)
                 {
-                    // Store move data until user picks promotion piece
-                    pendingSource = source;
-                    pendingTarget = target;
-                    pendingPlayer = currentPlayer;
+                    int fileDiff = (int)target.File - (int)source.File;
 
-                    Debug.Log("Promotion panel shown.");
-                    boardManager.TriggerPromotion(row, col, currentPlayer, OnPromotionSelected);
-                    return;
+                    // Moving straight forward (no column change)
+                    if (fileDiff == 0)
+                    {
+                        if (boardManager.game.Board[(int)target.Rank][(int)target.File] == null)
+                        {
+                            // Valid forward promotion
+                            pendingSource = source;
+                            pendingTarget = target;
+                            pendingPlayer = currentPlayer;
+
+                            Debug.Log("Promotion panel shown.");
+                            boardManager.TriggerPromotion(row, col, currentPlayer, OnPromotionSelected);
+                            return;
+                        }
+                        else
+                        {
+                            Debug.Log("Invalid promotion: piece blocking forward square.");
+                        }
+                    }
+                    else
+                    {
+                        // Diagonal promotion (capture move)
+                        pendingSource = source;
+                        pendingTarget = target;
+                        pendingPlayer = currentPlayer;
+
+                        Debug.Log("Promotion panel shown (capture promotion).");
+                        boardManager.TriggerPromotion(row, col, currentPlayer, OnPromotionSelected);
+                        return;
+                    }
                 }
             }
 

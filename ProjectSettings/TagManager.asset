@@ -42,9 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Promotion
-    uniqueID: 3320869577
-    locked: 0
   - name: Board
     uniqueID: 3491224243
+    locked: 0
+  - name: Promotion
+    uniqueID: 3320869577
     locked: 0
