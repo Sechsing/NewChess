@@ -6,7 +6,6 @@ using ChessSharp.Pieces;
 public class InputHandler : MonoBehaviour
 {
     public BoardManager boardManager;
-    public PromotionPanel promotionPanel; // Reference to your promotion UI
 
     private Vector2Int? selectedSquare = null;
     private Square pendingSource;
@@ -22,6 +21,17 @@ public class InputHandler : MonoBehaviour
 
             if (hit.collider != null)
             {
+                if (hit.collider.CompareTag("PromotionOption"))
+                {
+                    PromotionOption option = hit.collider.GetComponent<PromotionOption>();
+                    if (option != null)
+                    {
+                        Debug.Log($"Promotion option clicked: {option.promotionType}");
+                        OnPromotionSelected(option.promotionType);
+                    }
+                    return; 
+                }
+
                 BoardCell cell = hit.collider.GetComponent<BoardCell>();
                 if (cell != null)
                 {
@@ -86,7 +96,7 @@ public class InputHandler : MonoBehaviour
                     pendingPlayer = currentPlayer;
 
                     Debug.Log("Promotion panel shown.");
-                    promotionPanel.Show(currentPlayer, OnPromotionSelected);
+                    boardManager.TriggerPromotion(row, col, currentPlayer, OnPromotionSelected);
                     return;
                 }
             }
@@ -117,6 +127,12 @@ public class InputHandler : MonoBehaviour
         {
             boardManager.UpdateBoardByMove();
             Debug.Log("Pawn promoted and moved.");
+
+            GameObject[] promos = GameObject.FindGameObjectsWithTag("PromotionOption");
+            foreach (var promo in promos)
+            {
+                Destroy(promo);
+            }
 
             if (boardManager.game.GameState != GameState.NotCompleted)
                 Debug.Log($"Game Over: {boardManager.game.GameState}");

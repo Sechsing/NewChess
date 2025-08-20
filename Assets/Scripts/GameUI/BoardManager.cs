@@ -11,6 +11,7 @@ public class BoardManager : MonoBehaviour
 {
     public GameObject lightSquarePrefab;
     public GameObject darkSquarePrefab;
+    public GameObject promotionSquarePrefab;
 
     public GameObject whitePawnPrefab;
     public GameObject blackPawnPrefab;
@@ -162,6 +163,58 @@ public class BoardManager : MonoBehaviour
                 GameObject instance = Instantiate(prefab, new Vector3(col * squareSize, row * squareSize, -1), rotation, transform);
                 pieceObjects[row, col] = instance;
             }
+        }
+    }
+
+    public void TriggerPromotion(int row, int col, Player player, Action<PawnPromotion> callback)
+    {
+        bool isWhite = player == Player.White;
+        int direction = isWhite ? -1 : 1;
+
+        GameObject[] piecePrefabs = isWhite
+            ? new[] { whiteQueenPrefab, whiteRookPrefab, whiteBishopPrefab, whiteKnightPrefab }
+            : new[] { blackQueenPrefab, blackRookPrefab, blackBishopPrefab, blackKnightPrefab };
+
+        PawnPromotion[] promotionTypes = {
+            PawnPromotion.Queen,
+            PawnPromotion.Rook,
+            PawnPromotion.Bishop,
+            PawnPromotion.Knight
+        };
+
+        for (int i = 0; i < piecePrefabs.Length; i++)
+        {
+            int optionRow = row + (i * direction);
+            int optionCol = col;
+
+            if (optionRow < 0 || optionRow >= numRows) continue;
+
+            Vector3 pos = new Vector3(optionCol * squareSize, optionRow * squareSize, -1f); 
+
+            GameObject bg = Instantiate(promotionSquarePrefab, pos, Quaternion.identity, transform);
+            bg.tag = "PromotionOption"; 
+
+            SpriteRenderer bgRenderer = bg.GetComponent<SpriteRenderer>();
+            if (bgRenderer != null)
+            {
+                bgRenderer.sortingLayerName = "Promotion";
+                bgRenderer.sortingOrder = 0; 
+            }
+
+            PromotionOption option = bg.AddComponent<PromotionOption>();
+            option.Init(promotionTypes[i], callback);
+
+            GameObject piece = Instantiate(piecePrefabs[i], bg.transform);
+            piece.transform.localPosition = Vector3.zero;
+
+            SpriteRenderer pieceRenderer = piece.GetComponent<SpriteRenderer>();
+            if (pieceRenderer != null)
+            {
+                pieceRenderer.sortingLayerName = "Promotion";
+                pieceRenderer.sortingOrder = 1; 
+            }
+
+            BoxCollider2D collider = bg.AddComponent<BoxCollider2D>();
         }
     }
 
