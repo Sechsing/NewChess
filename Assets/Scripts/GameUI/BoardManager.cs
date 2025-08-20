@@ -142,8 +142,11 @@ public class BoardManager : MonoBehaviour
         mat.EnableKeyword("OUTLINE_ON");
         mat.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.1f);
         mat.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
-
         tmp.fontMaterial = mat;
+
+        var renderer = go.GetComponent<MeshRenderer>();
+        renderer.sortingLayerName = "Board"; 
+        renderer.sortingOrder = 10;        
     }
 
     void InstantiatePieces()
@@ -218,7 +221,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void UpdateBoardByMove()
+    public void UpdateBoardByGameState()
     {
         for (int row = 0; row < numRows; row++)
         {

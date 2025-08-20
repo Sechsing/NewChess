@@ -76,7 +76,7 @@ public class InputHandler : MonoBehaviour
                 if (boardManager.game.MakeFire(fire))
                 {
                     Debug.Log("Bombard fired!");
-                    boardManager.UpdateBoardByMove();
+                    boardManager.UpdateBoardByGameState();
                     return;
                 }
             }
@@ -129,7 +129,7 @@ public class InputHandler : MonoBehaviour
             Move move = new Move(source, target, currentPlayer);
             if (boardManager.game.MakeMove(move, false))
             {
-                boardManager.UpdateBoardByMove();
+                boardManager.UpdateBoardByGameState();
                 Debug.Log("Piece moved.");
                 if (boardManager.game.GameState != GameState.NotCompleted)
                     Debug.Log($"Game Over: {boardManager.game.GameState}");
@@ -149,7 +149,7 @@ public class InputHandler : MonoBehaviour
 
         if (boardManager.game.MakeMove(move, false))
         {
-            boardManager.UpdateBoardByMove();
+            boardManager.UpdateBoardByGameState();
             Debug.Log("Pawn promoted and moved.");
 
             GameObject[] promos = GameObject.FindGameObjectsWithTag("PromotionOption");
