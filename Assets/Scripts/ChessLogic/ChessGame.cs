@@ -157,6 +157,11 @@ public class ChessGame : IDeepCloneable<ChessGame>
         if (!bombard.IsValidFire(fire, this))
             return false;
 
+        // Disallow fire if the target piece is a Pawn 
+        Piece? targetPiece = this[fire.Target.File, fire.Target.Rank];
+        if (targetPiece is Pawn || targetPiece is King)
+            return false;
+
         // Destroy the piece on target square
         Board[(int)fire.Target.Rank][(int)fire.Target.File] = null;
 
