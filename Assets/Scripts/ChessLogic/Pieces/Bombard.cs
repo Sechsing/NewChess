@@ -10,8 +10,7 @@ public class Bombard : Piece
         if (board[move.Destination.File, move.Destination.Rank] != null)
             return false;
 
-        return ((move.GetAbsDeltaX() == 1 && move.GetAbsDeltaY() == 0) ||
-            (move.GetAbsDeltaY() == 1 && move.GetAbsDeltaX() == 0)) && 
+        return (move.GetAbsDeltaX() <= 1 && move.GetAbsDeltaY() <= 1) && 
                 !board.IsTherePieceInBetween(move.Source, move.Destination);
     }
 
