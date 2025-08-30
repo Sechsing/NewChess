@@ -3,7 +3,7 @@ using ChessSharp;
 using ChessSharp.SquareData;
 using ChessSharp.Pieces;
 
-public class InputHandler : MonoBehaviour
+public class BoardInputHandler : MonoBehaviour
 {
     public BoardManager boardManager;
 

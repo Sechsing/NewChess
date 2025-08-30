@@ -46,7 +46,7 @@ public class BoardManager : MonoBehaviour
     public int NumRows => numRows;
     public int NumCols => numCols;
 
-    void Awake()
+    private void Awake()
     {
         squareSize = lightSquarePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
         InitializePrefabDictionaries();
@@ -57,7 +57,7 @@ public class BoardManager : MonoBehaviour
         pieceObjects = new GameObject?[numRows, numCols];
     }
 
-    void Start()
+    private void Start()
     {
         GenerateBoard();
         GenerateBoardLabels();
@@ -65,7 +65,7 @@ public class BoardManager : MonoBehaviour
         CenterCamera();
     }
 
-    void InitializePrefabDictionaries()
+    private void InitializePrefabDictionaries()
     {
         whitePiecePrefabs = new Dictionary<Type, GameObject>
         {
@@ -90,7 +90,7 @@ public class BoardManager : MonoBehaviour
         };
     }
 
-    void GenerateBoard()
+    private void GenerateBoard()
     {
         cells = new GameObject[numRows, numCols];
 
@@ -111,7 +111,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void GenerateBoardLabels()
+    private void GenerateBoardLabels()
     {
         for (int col = 0; col < numCols; col++)
         {
@@ -126,7 +126,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void CreateLabel(string text, Vector3 pos)
+    private void CreateLabel(string text, Vector3 pos)
     {
         GameObject go = new GameObject("Label" + text);
         go.transform.SetParent(transform, false);
@@ -149,7 +149,7 @@ public class BoardManager : MonoBehaviour
         renderer.sortingOrder = 10;        
     }
 
-    void InstantiatePieces()
+    private void InstantiatePieces()
     {
         for (int row = 0; row < numRows; row++)
         {
@@ -263,7 +263,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    GameObject InstantiatePiece(Piece piece, int col, int row)
+    private GameObject InstantiatePiece(Piece piece, int col, int row)
     {
         GameObject prefab = GetPrefabForPiece(piece);
         Quaternion rotation = piece is Bombard
@@ -278,20 +278,20 @@ public class BoardManager : MonoBehaviour
         return instance;
     }
 
-    bool IsGameObjectCorrect(GameObject go, Piece piece)
+    private bool IsGameObjectCorrect(GameObject go, Piece piece)
     {
         string expectedName = GetPrefabForPiece(piece).name.Replace("(Clone)", "");
         return go.name.StartsWith(expectedName);
     }
 
-    GameObject GetPrefabForPiece(Piece piece)
+    private GameObject GetPrefabForPiece(Piece piece)
     {
         return piece.Owner == Player.White
             ? whitePiecePrefabs[piece.GetType()]
             : blackPiecePrefabs[piece.GetType()];
     }
 
-    void CenterCamera()
+    private void CenterCamera()
     {
         float boardWidth = numCols * squareSize;
         float boardHeight = numRows * squareSize;
