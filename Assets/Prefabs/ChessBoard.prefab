@@ -17,21 +17,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &207533484444618844
-Transform:
+--- !u!224 &207533484444618844
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2855477640576487345}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.028072193, y: 0.24657975, z: 0.00507893}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7016281729206997202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightSquarePrefab: {fileID: 6696521255884828071, guid: 59529c6b3bd9b4a4bb089df1b099e805, type: 3}
   darkSquarePrefab: {fileID: 8481261097164664881, guid: b3630717410f5f946b0ae224d000f748, type: 3}
+  promotionSquarePrefab: {fileID: 0}
   whitePawnPrefab: {fileID: 3127662724552808704, guid: 2a7d09132e5154049bd6065621041574, type: 3}
   blackPawnPrefab: {fileID: 6154335436579328498, guid: 2d9ca7cdc63b0a84e83e9385253cfbb4, type: 3}
   whiteRookPrefab: {fileID: 18305143404479230, guid: f279c8ecc5707814797581f083d02e63, type: 3}

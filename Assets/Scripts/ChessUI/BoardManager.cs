@@ -28,13 +28,15 @@ public class BoardManager : MonoBehaviour
     public GameObject whiteBombardPrefab;
     public GameObject blackBombardPrefab;
 
+    private GameObject[,] cells;
+    private GameObject?[,] pieceObjects;
+
     public ChessGame game { get; private set; }
 
     private Dictionary<Type, GameObject> whitePiecePrefabs;
     private Dictionary<Type, GameObject> blackPiecePrefabs;
 
-    private GameObject[,] cells;
-    private GameObject?[,] pieceObjects;
+    private Vector2 boardOffset;
 
     private string fileLabels = "ABCDEFGH";
 
@@ -48,13 +50,22 @@ public class BoardManager : MonoBehaviour
 
     private void Awake()
     {
-        squareSize = lightSquarePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
+        RectTransform rt = GetComponent<RectTransform>();
+
         InitializePrefabDictionaries();
 
         game = new ChessGame();
         numRows = game.Board.Length;
         numCols = game.Board[0].Length;
         pieceObjects = new GameObject?[numRows, numCols];
+
+        // Calculate square size dynamically 
+        float width = rt.rect.width;
+        float height = rt.rect.height;
+        squareSize = Mathf.Min(width / numCols, height / numRows);
+
+        // Offset for bottom-left spawn
+        boardOffset = new Vector2(numCols * squareSize / 2f - squareSize / 2f, numRows * squareSize / 2f - squareSize / 2f);
     }
 
     private void Start()
@@ -62,7 +73,6 @@ public class BoardManager : MonoBehaviour
         GenerateBoard();
         GenerateBoardLabels();
         InstantiatePieces();
-        CenterCamera();
     }
 
     private void InitializePrefabDictionaries()
@@ -99,12 +109,17 @@ public class BoardManager : MonoBehaviour
             for (int col = 0; col < numCols; col++)
             {
                 GameObject prefab = (row + col) % 2 == 0 ? lightSquarePrefab : darkSquarePrefab;
-                Vector2 position = new Vector2(col * squareSize, row * squareSize);
-                GameObject square = Instantiate(prefab, position, Quaternion.identity, transform);
-                square.AddComponent<BoxCollider2D>();
+                GameObject square = Instantiate(prefab, transform);
+
+                RectTransform rt = square.GetComponent<RectTransform>();
+                if (rt == null) rt = square.AddComponent<RectTransform>();
+                rt.anchoredPosition = new Vector2(col * squareSize, row * squareSize) - boardOffset;
+                rt.sizeDelta = new Vector2(squareSize, squareSize);
+
                 BoardCell cell = square.AddComponent<BoardCell>();
                 cell.row = row;
                 cell.col = col;
+                cell.boardInputHandler = FindObjectOfType<BoardInputHandler>();
 
                 cells[row, col] = square;
             }
@@ -116,37 +131,40 @@ public class BoardManager : MonoBehaviour
         for (int col = 0; col < numCols; col++)
         {
             string letter = fileLabels[col].ToString();
-            CreateLabel(letter, new Vector3(col * squareSize + 0.09f, -0.4f * squareSize + 0.005f, -1));
+            CreateLabel(letter, new Vector2(
+                col * squareSize - boardOffset.x - squareSize/2f * 0.75f, 
+                -boardOffset.y - squareSize/2f * 0.75f
+            ));
         }
 
         for (int row = 0; row < numRows; row++)
         {
             string number = (row + 1).ToString();
-            CreateLabel(number, new Vector3(-0.4f * squareSize + 0.005f, row * squareSize + 0.075f , -1));
+            CreateLabel(number, new Vector2(
+                -boardOffset.x - squareSize/2f * 0.75f, 
+                row * squareSize - boardOffset.y + squareSize/2f * 0.75f
+            ));
         }
     }
 
-    private void CreateLabel(string text, Vector3 pos)
+    private void CreateLabel(string text, Vector2 anchoredPos)
     {
         GameObject go = new GameObject("Label" + text);
         go.transform.SetParent(transform, false);
-        go.transform.position = pos;
 
-        TextMeshPro tmp = go.AddComponent<TextMeshPro>();
+        RectTransform rt = go.AddComponent<RectTransform>();
+        rt.anchoredPosition = anchoredPos;
+
+        TextMeshProUGUI tmp = go.AddComponent<TextMeshProUGUI>();
         tmp.text = text;
-        tmp.fontSize = 0.5f;
+        tmp.fontSize = 20; 
         tmp.alignment = TextAlignmentOptions.Center;
-        tmp.sortingOrder = 10;
 
         Material mat = new Material(tmp.fontMaterial);
         mat.EnableKeyword("OUTLINE_ON");
         mat.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.1f);
         mat.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
         tmp.fontMaterial = mat;
-
-        var renderer = go.GetComponent<MeshRenderer>();
-        renderer.sortingLayerName = "Board"; 
-        renderer.sortingOrder = 10;        
     }
 
     private void InstantiatePieces()
@@ -158,15 +176,29 @@ public class BoardManager : MonoBehaviour
                 Piece? piece = game.Board[row][col];
                 if (piece == null) continue;
 
-                GameObject prefab = GetPrefabForPiece(piece);
-                Quaternion rotation = piece is Bombard
-                    ? Quaternion.Euler(0, 0, piece.Owner == Player.White ? 90 : -90)
-                    : Quaternion.identity;
-
-                GameObject instance = Instantiate(prefab, new Vector3(col * squareSize, row * squareSize, -1), rotation, transform);
+                GameObject instance = InstantiatePiece(piece, col, row);
                 pieceObjects[row, col] = instance;
             }
         }
+    }
+
+    private GameObject InstantiatePiece(Piece piece, int col, int row)
+    {
+        GameObject prefab = GetPrefabForPiece(piece);
+        GameObject instance = Instantiate(prefab, transform);
+
+        RectTransform rt = instance.GetComponent<RectTransform>();
+        if (rt == null) rt = instance.AddComponent<RectTransform>();
+
+        rt.anchoredPosition = new Vector2(col * squareSize, row * squareSize) - boardOffset;
+        rt.sizeDelta = new Vector2(squareSize * 0.75f, squareSize * 0.75f);
+
+        if (piece is Bombard)
+            rt.localRotation = Quaternion.Euler(0, 0, piece.Owner == Player.White ? 90 : -90);
+        else
+            rt.localRotation = Quaternion.identity;
+
+        return instance;
     }
 
     public void TriggerPromotion(int row, int col, Player player, Action<PawnPromotion> callback)
@@ -192,32 +224,24 @@ public class BoardManager : MonoBehaviour
 
             if (optionRow < 0 || optionRow >= numRows) continue;
 
-            Vector3 pos = new Vector3(optionCol * squareSize, optionRow * squareSize, -1f); 
+            GameObject bg = Instantiate(promotionSquarePrefab, transform);
+            bg.tag = "PromotionOption";
 
-            GameObject bg = Instantiate(promotionSquarePrefab, pos, Quaternion.identity, transform);
-            bg.tag = "PromotionOption"; 
+            RectTransform bgRT = bg.GetComponent<RectTransform>();
+            if (bgRT == null) bgRT = bg.AddComponent<RectTransform>();
 
-            SpriteRenderer bgRenderer = bg.GetComponent<SpriteRenderer>();
-            if (bgRenderer != null)
-            {
-                bgRenderer.sortingLayerName = "Promotion";
-                bgRenderer.sortingOrder = 0; 
-            }
+            bgRT.anchoredPosition = new Vector2(optionCol * squareSize, optionRow * squareSize) - boardOffset;
+            bgRT.sizeDelta = new Vector2(squareSize, squareSize);
 
             PromotionOption option = bg.AddComponent<PromotionOption>();
             option.Init(promotionTypes[i], callback);
 
             GameObject piece = Instantiate(piecePrefabs[i], bg.transform);
-            piece.transform.localPosition = Vector3.zero;
+            RectTransform pieceRT = piece.GetComponent<RectTransform>();
+            if (pieceRT == null) pieceRT = piece.AddComponent<RectTransform>();
 
-            SpriteRenderer pieceRenderer = piece.GetComponent<SpriteRenderer>();
-            if (pieceRenderer != null)
-            {
-                pieceRenderer.sortingLayerName = "Promotion";
-                pieceRenderer.sortingOrder = 1; 
-            }
-
-            BoxCollider2D collider = bg.AddComponent<BoxCollider2D>();
+            pieceRT.anchoredPosition = Vector2.zero;
+            pieceRT.sizeDelta = new Vector2(squareSize * 0.75f, squareSize * 0.75f);
         }
     }
 
@@ -250,7 +274,11 @@ public class BoardManager : MonoBehaviour
                         }
                         else
                         {
-                            existingGO.transform.position = new Vector3(col * squareSize, row * squareSize, -1);
+                            RectTransform rt = existingGO.GetComponent<RectTransform>();
+                            if (rt != null)
+                            {
+                                rt.anchoredPosition = new Vector2(col * squareSize, row * squareSize) - boardOffset;
+                            }
                         }
                     }
                     else
@@ -261,21 +289,6 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    private GameObject InstantiatePiece(Piece piece, int col, int row)
-    {
-        GameObject prefab = GetPrefabForPiece(piece);
-        Quaternion rotation = piece is Bombard
-            ? Quaternion.Euler(0, 0, piece.Owner == Player.White ? 90 : -90)
-            : Quaternion.identity;
-
-        GameObject instance = Instantiate(prefab, new Vector3(col * squareSize, row * squareSize, -1), rotation, transform);
-        instance.AddComponent<BoxCollider2D>();
-        BoardCell cell = instance.AddComponent<BoardCell>();
-        cell.row = row;
-        cell.col = col;
-        return instance;
     }
 
     private bool IsGameObjectCorrect(GameObject go, Piece piece)
@@ -289,14 +302,5 @@ public class BoardManager : MonoBehaviour
         return piece.Owner == Player.White
             ? whitePiecePrefabs[piece.GetType()]
             : blackPiecePrefabs[piece.GetType()];
-    }
-
-    private void CenterCamera()
-    {
-        float boardWidth = numCols * squareSize;
-        float boardHeight = numRows * squareSize;
-
-        Camera.main.transform.position = new Vector3(boardWidth / 2f, boardHeight / 2f, -10f);
-        Camera.main.orthographicSize = boardHeight / 2f + 0.5f;
     }
 }

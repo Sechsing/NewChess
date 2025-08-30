@@ -12,35 +12,11 @@ public class BoardInputHandler : MonoBehaviour
     private Square pendingTarget;
     private Player pendingPlayer;
 
-    private void Update()
+    public void OnCellClicked(int col, int row)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-
-            if (hit.collider != null)
-            {
-                if (hit.collider.CompareTag("PromotionOption"))
-                {
-                    PromotionOption option = hit.collider.GetComponent<PromotionOption>();
-                    if (option != null)
-                    {
-                        Debug.Log($"Promotion option clicked: {option.promotionType}");
-                        OnPromotionSelected(option.promotionType);
-                    }
-                    return; 
-                }
-
-                BoardCell cell = hit.collider.GetComponent<BoardCell>();
-                if (cell != null)
-                {
-                    HandleClick(cell.col, cell.row);
-                }
-            }
-        }
+        HandleClick(col, row);
     }
-
+    
     private void HandleClick(int col, int row)
     {
         if (boardManager == null || boardManager.game == null)
