@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour
     public GameObject lightSquarePrefab;
     public GameObject darkSquarePrefab;
     public GameObject promotionSquarePrefab;
+    public GameObject dotPrefab;
 
     public GameObject whitePawnPrefab;
     public GameObject blackPawnPrefab;
@@ -32,6 +33,8 @@ public class BoardManager : MonoBehaviour
     private GameObject?[,] pieceObjects;
 
     public ChessGame game { get; private set; }
+
+    private List<GameObject> activeDots = new List<GameObject>();
 
     private Dictionary<Type, GameObject> whitePiecePrefabs;
     private Dictionary<Type, GameObject> blackPiecePrefabs;
@@ -199,6 +202,30 @@ public class BoardManager : MonoBehaviour
             rt.localRotation = Quaternion.identity;
 
         return instance;
+    }
+
+    public GameObject InstantiateDot(int row, int col)
+    {
+        GameObject dot = Instantiate(dotPrefab, transform);
+
+        RectTransform rt = dot.GetComponent<RectTransform>();
+        if (rt == null) rt = dot.AddComponent<RectTransform>();
+
+        rt.anchoredPosition = new Vector2(col * squareSize, row * squareSize) - boardOffset;
+        rt.sizeDelta = new Vector2(squareSize * 0.25f, squareSize * 0.25f); 
+
+        activeDots.Add(dot);
+
+        return dot;
+    }
+
+    public void ClearDots()
+    {
+        foreach (var dot in activeDots)
+        {
+            Destroy(dot);
+        }
+        activeDots.Clear();
     }
 
     public void TriggerPromotion(int row, int col, Player player, Action<PawnPromotion> callback)

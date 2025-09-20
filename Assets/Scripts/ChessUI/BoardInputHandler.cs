@@ -25,6 +25,7 @@ public class BoardInputHandler : MonoBehaviour
             return;
         }
 
+        // If no piece is selected yet
         if (selectedSquare == null)
         {
             Piece? piece = boardManager.game.Board[row][col];
@@ -32,6 +33,20 @@ public class BoardInputHandler : MonoBehaviour
             {
                 selectedSquare = new Vector2Int(col, row);
                 Debug.Log($"Selected piece at ({col},{row})");
+
+                // Clear old dots first
+                boardManager.ClearDots();
+
+                // Show valid moves for this piece
+                Square source = new Square((File)col, (Rank)row);
+                var legalMoves = ChessUtilities.GetValidMovesOfSourceSquare(source, boardManager.game);
+
+                foreach (var move in legalMoves)
+                {
+                    int targetCol = (int)move.Destination.File;
+                    int targetRow = (int)move.Destination.Rank;
+                    boardManager.InstantiateDot(targetRow, targetCol);
+                }
             }
         }
         else
@@ -44,6 +59,8 @@ public class BoardInputHandler : MonoBehaviour
             Player currentPlayer = boardManager.game.WhoseTurn;
             Piece? piece = boardManager.game[source.File, source.Rank];
 
+            // Clear dots after a second click 
+            boardManager.ClearDots();
             selectedSquare = null;
 
             if (piece is Bombard)
@@ -57,7 +74,7 @@ public class BoardInputHandler : MonoBehaviour
                 }
             }
 
-            // Check for pawn promotion
+            // Promotion logic
             if (piece is Pawn)
             {
                 bool isPromotion =
@@ -68,12 +85,10 @@ public class BoardInputHandler : MonoBehaviour
                 {
                     int fileDiff = (int)target.File - (int)source.File;
 
-                    // Moving straight forward (no column change)
                     if (fileDiff == 0)
                     {
                         if (boardManager.game.Board[(int)target.Rank][(int)target.File] == null)
                         {
-                            // Valid forward promotion
                             pendingSource = source;
                             pendingTarget = target;
                             pendingPlayer = currentPlayer;
@@ -82,14 +97,9 @@ public class BoardInputHandler : MonoBehaviour
                             boardManager.TriggerPromotion(row, col, currentPlayer, OnPromotionSelected);
                             return;
                         }
-                        else
-                        {
-                            Debug.Log("Invalid promotion: piece blocking forward square.");
-                        }
                     }
                     else
                     {
-                        // Diagonal promotion (capture move)
                         pendingSource = source;
                         pendingTarget = target;
                         pendingPlayer = currentPlayer;
@@ -101,7 +111,7 @@ public class BoardInputHandler : MonoBehaviour
                 }
             }
 
-            // Regular move (non-promotion)
+            // Regular move
             Move move = new Move(source, target, currentPlayer);
             if (boardManager.game.MakeMove(move, false))
             {
