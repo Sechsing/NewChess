@@ -28,6 +28,9 @@ public class BoardManager : MonoBehaviour
     public GameObject blackKingPrefab;
     public GameObject whiteBombardPrefab;
     public GameObject blackBombardPrefab;
+    public GameObject haloPrefab;
+
+    private GameObject haloInstance;
 
     private GameObject[,] cells;
     private GameObject?[,] pieceObjects;
@@ -76,6 +79,7 @@ public class BoardManager : MonoBehaviour
         GenerateBoard();
         GenerateBoardLabels();
         InstantiatePieces();
+        UpdateBoardByGameState();
     }
 
     private void InitializePrefabDictionaries()
@@ -316,6 +320,7 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+        UpdateHalo(game.WhoseTurn);
     }
 
     private bool IsGameObjectCorrect(GameObject go, Piece piece)
@@ -329,5 +334,44 @@ public class BoardManager : MonoBehaviour
         return piece.Owner == Player.White
             ? whitePiecePrefabs[piece.GetType()]
             : blackPiecePrefabs[piece.GetType()];
+    }
+
+    public void UpdateHalo(Player currentPlayer)
+    {
+        // Destroy halo if game is over
+        if (game.GameState != GameState.NotCompleted)
+        {
+            if (haloInstance != null)
+            {
+                Destroy(haloInstance);
+                haloInstance = null;
+            }
+            return;
+        }
+
+        // Find the king of the current player
+        for (int row = 0; row < numRows; row++)
+        {
+            for (int col = 0; col < numCols; col++)
+            {
+                Piece? piece = game.Board[row][col];
+                if (piece is King && piece.Owner == currentPlayer)
+                {
+                    // Create halo if it doesn't exist
+                    if (haloInstance == null)
+                    {
+                        haloInstance = Instantiate(haloPrefab, transform);
+                    }
+
+                    RectTransform rt = haloInstance.GetComponent<RectTransform>();
+                    if (rt == null) rt = haloInstance.AddComponent<RectTransform>();
+
+                    rt.anchoredPosition = new Vector2(col * squareSize, row * squareSize + 27.5f) - boardOffset;
+                    rt.sizeDelta = new Vector2(squareSize * 0.75f, squareSize * 0.15f);
+
+                    return;
+                }
+            }
+        }
     }
 }
