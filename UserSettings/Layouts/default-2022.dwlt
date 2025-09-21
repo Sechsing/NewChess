@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 49
+  controlID: 37
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -139,7 +139,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1102.4
+    width: 1166.4
     height: 770.8
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
@@ -162,7 +162,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 277.6
+    width: 291.2
     height: 770.8
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 4000, y: 4000}
@@ -186,12 +186,12 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 277.6
+    x: 291.2
     y: 0
-    width: 824.80005
+    width: 875.2
     height: 770.8
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 12}
@@ -214,12 +214,12 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1102.4
+    x: 1166.4
     y: 0
-    width: 433.59998
+    width: 369.59998
     height: 770.8
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 10}
   m_Panes:
   - {fileID: 10}
@@ -245,9 +245,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1102.4
+    x: 1166.4
     y: 73.6
-    width: 432.59998
+    width: 368.59998
     height: 749.8
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -294,7 +294,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 73.6
-    width: 276.6
+    width: 290.2
     height: 749.8
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -309,23 +309,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 24810000
-      m_LastClickedID: 33060
-      m_ExpandedIDs: 8ceefeff10f8ffff1cf8ffff1ef8ffff16fbffff8e720000967200001c81000024810000
+      m_SelectedIDs: 14fbffff
+      m_LastClickedID: 0
+      m_ExpandedIDs: 0afbffff12fbffff14fbffff16fbffff1870000020700000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Halo
-        m_OriginalName: Halo
+        m_Name: Halo(Clone)
+        m_OriginalName: Halo(Clone)
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -73228
+        m_UserData: -15262
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 4
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -730,9 +730,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 679.54755, y: 1328.3174, z: -16.647133}
+    m_Target: {x: 660.02704, y: 1173.2422, z: -5.7852626}
     speed: 2
-    m_Value: {x: 679.54755, y: 1328.3174, z: -16.647133}
+    m_Value: {x: 660.02704, y: 1173.2422, z: -5.7852626}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -782,9 +782,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 838.9055
+    m_Target: 648.751
     speed: 2
-    m_Value: 838.9055
+    m_Value: 648.751
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -829,9 +829,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 275.2
+    x: 277.6
     y: 73.6
-    width: 803.60004
+    width: 822.80005
     height: 749.8
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -863,9 +863,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 277.6
+    x: 291.2
     y: 73.6
-    width: 822.80005
+    width: 873.2
     height: 749.8
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
     - UnityEditor.DeviceSimulation.ApplicationSettingsPlugin
     pluginStates:
     - '{}'
-    scale: 24
+    scale: 35
     fitToScreenEnabled: 0
     rotationDegree: 0
     highlightSafeAreaEnabled: 1

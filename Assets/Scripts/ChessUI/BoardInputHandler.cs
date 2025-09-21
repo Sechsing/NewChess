@@ -19,12 +19,6 @@ public class BoardInputHandler : MonoBehaviour
     
     private void HandleClick(int col, int row)
     {
-        if (boardManager == null || boardManager.game == null)
-        {
-            Debug.LogError("BoardManager or ChessGame not assigned.");
-            return;
-        }
-
         // If no piece is selected yet
         if (selectedSquare == null)
         {
@@ -32,16 +26,12 @@ public class BoardInputHandler : MonoBehaviour
             if (piece != null && piece.Owner == boardManager.game.WhoseTurn)
             {
                 selectedSquare = new Vector2Int(col, row);
-                Debug.Log($"Selected piece at ({col},{row})");
 
-                // Clear old dots first
                 boardManager.ClearDots();
-
-                // Show valid moves for this piece
                 Square source = new Square((File)col, (Rank)row);
-                var legalMoves = ChessUtilities.GetValidMovesOfSourceSquare(source, boardManager.game);
+                var newMoves = ChessUtilities.GetValidMovesOfSourceSquare(source, boardManager.game);
 
-                foreach (var move in legalMoves)
+                foreach (var move in newMoves)
                 {
                     int targetCol = (int)move.Destination.File;
                     int targetRow = (int)move.Destination.Rank;
@@ -59,7 +49,28 @@ public class BoardInputHandler : MonoBehaviour
             Player currentPlayer = boardManager.game.WhoseTurn;
             Piece? piece = boardManager.game[source.File, source.Rank];
 
-            // Clear dots after a second click 
+            // Switch selection if another piece of the same color is selected
+            Piece? clickedPiece = boardManager.game.Board[row][col];
+            if (clickedPiece != null && clickedPiece.Owner == currentPlayer)
+            {
+                selectedSquare = new Vector2Int(col, row);
+                boardManager.ClearDots();
+
+                Square newSource = new Square((File)col, (Rank)row);
+                var newValidMoves = ChessUtilities.GetValidMovesOfSourceSquare(newSource, boardManager.game);
+
+                foreach (var newMove in newValidMoves)
+                {
+                    int targetCol = (int)newMove.Destination.File;
+                    int targetRow = (int)newMove.Destination.Rank;
+                    boardManager.InstantiateDot(targetRow, targetCol);
+                }
+
+                Debug.Log($"Switched selection to piece at ({col},{row})");
+                return;
+            }
+
+            // Otherwise clear dots and try a move
             boardManager.ClearDots();
             selectedSquare = null;
 
@@ -125,6 +136,7 @@ public class BoardInputHandler : MonoBehaviour
                 Debug.Log("Invalid move.");
             }
         }
+
     }
 
     // Callback from promotion panel
@@ -132,11 +144,9 @@ public class BoardInputHandler : MonoBehaviour
     {
         Move move = new Move(pendingSource, pendingTarget, pendingPlayer, chosenPiece);
 
-
         if (boardManager.game.MakeMove(move, false))
         {
             boardManager.UpdateBoardByGameState();
-            Debug.Log("Pawn promoted and moved.");
 
             GameObject[] promos = GameObject.FindGameObjectsWithTag("PromotionOption");
             foreach (var promo in promos)
