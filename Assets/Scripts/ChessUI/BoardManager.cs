@@ -198,8 +198,20 @@ public class BoardManager : MonoBehaviour
         if (rt == null) rt = instance.AddComponent<RectTransform>();
 
         rt.anchoredPosition = new Vector2(col * squareSize, row * squareSize) - boardOffset;
-        rt.sizeDelta = new Vector2(squareSize * 0.75f, squareSize * 0.75f);
 
+        // Default size
+        float width = squareSize * 0.75f;
+        float height = squareSize * 0.75f;
+
+        // If piece is a pawn, adjust width
+        if (piece is Pawn || piece is Rook)
+        {
+            width *= 0.85f; 
+        }
+
+        rt.sizeDelta = new Vector2(width, height);
+
+        // Rotation handling for Bombard
         if (piece is Bombard)
             rt.localRotation = Quaternion.Euler(0, 0, piece.Owner == Player.White ? 90 : -90);
         else

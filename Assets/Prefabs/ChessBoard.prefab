@@ -50,7 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightSquarePrefab: {fileID: 6696521255884828071, guid: 59529c6b3bd9b4a4bb089df1b099e805, type: 3}
   darkSquarePrefab: {fileID: 8481261097164664881, guid: b3630717410f5f946b0ae224d000f748, type: 3}
-  promotionSquarePrefab: {fileID: 0}
+  promotionSquarePrefab: {fileID: 6696521255884828071, guid: fe8fa5a5f28bd1c41abbb56dba5fbf06, type: 3}
+  dotPrefab: {fileID: 3185493646959114705, guid: f431ccf54137d6e41a63333399abc277, type: 3}
   whitePawnPrefab: {fileID: 3127662724552808704, guid: 2a7d09132e5154049bd6065621041574, type: 3}
   blackPawnPrefab: {fileID: 6154335436579328498, guid: 2d9ca7cdc63b0a84e83e9385253cfbb4, type: 3}
   whiteRookPrefab: {fileID: 18305143404479230, guid: f279c8ecc5707814797581f083d02e63, type: 3}
@@ -65,3 +66,4 @@ MonoBehaviour:
   blackKingPrefab: {fileID: 1156833867037608260, guid: d57672628ca19c74da8f95f937d572b6, type: 3}
   whiteBombardPrefab: {fileID: 77631068202098651, guid: 329a9bed198124243b40e7eac6a1c262, type: 3}
   blackBombardPrefab: {fileID: 8085282697595867133, guid: 7d502b3eae8a4a94ea1066c934745da6, type: 3}
+  haloPrefab: {fileID: 0}
