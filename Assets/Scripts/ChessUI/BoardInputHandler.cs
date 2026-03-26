@@ -6,6 +6,7 @@ using ChessSharp.Pieces;
 public class BoardInputHandler : MonoBehaviour
 {
     public BoardManager boardManager;
+    public GameController gameController;
 
     private Vector2Int? selectedSquare = null;
     private Square pendingSource;
@@ -77,10 +78,12 @@ public class BoardInputHandler : MonoBehaviour
             if (piece is Bombard)
             {
                 Fire fire = new Fire(source, target, currentPlayer);
+                gameController?.OnBeforeAction();
                 if (boardManager.game.MakeFire(fire))
                 {
                     Debug.Log("Bombard fired!");
                     boardManager.UpdateBoardByGameState();
+                    gameController?.OnAfterAction();
                     return;
                 }
             }
@@ -124,10 +127,12 @@ public class BoardInputHandler : MonoBehaviour
 
             // Regular move
             Move move = new Move(source, target, currentPlayer);
+            gameController?.OnBeforeAction();
             if (boardManager.game.MakeMove(move, false))
             {
                 boardManager.UpdateBoardByGameState();
                 Debug.Log("Piece moved.");
+                gameController?.OnAfterAction();
                 if (boardManager.game.GameState != GameState.NotCompleted)
                     Debug.Log($"Game Over: {boardManager.game.GameState}");
             }
@@ -144,6 +149,7 @@ public class BoardInputHandler : MonoBehaviour
     {
         Move move = new Move(pendingSource, pendingTarget, pendingPlayer, chosenPiece);
 
+        gameController?.OnBeforeAction();
         if (boardManager.game.MakeMove(move, false))
         {
             boardManager.UpdateBoardByGameState();
@@ -154,6 +160,7 @@ public class BoardInputHandler : MonoBehaviour
                 Destroy(promo);
             }
 
+            gameController?.OnAfterAction();
             if (boardManager.game.GameState != GameState.NotCompleted)
                 Debug.Log($"Game Over: {boardManager.game.GameState}");
         }
@@ -161,5 +168,11 @@ public class BoardInputHandler : MonoBehaviour
         {
             Debug.Log("Invalid promotion move.");
         }
+    }
+
+    public void ResetSelection()
+    {
+        selectedSquare = null;
+        boardManager.ClearDots();
     }
 }

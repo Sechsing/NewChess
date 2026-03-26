@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace ChessSharp;
 
 /// <summary>Represents a fire action in game.</summary>
-public class Fire : IDeepCloneable<Fire>
+public class Fire : IDeepCloneable<Fire>, IGameAction
 {
     /// <summary>Gets the source <see cref="Square"/> of the <see cref="Fire"/>.</summary>
     public Square Source { get; }
@@ -19,6 +19,10 @@ public class Fire : IDeepCloneable<Fire>
     {
         return new Fire(Source, Target, Player);
     }
+
+    IGameAction IDeepCloneable<IGameAction>.DeepClone() => DeepClone();
+
+    public string ToNotation() => $"Fire {Source}\u2192{Target}";
 
     public override bool Equals([NotNullWhen(true)] object? obj) =>
         obj is Fire fire &&

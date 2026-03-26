@@ -22,7 +22,13 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Game quit!");
         Application.Quit();
 
-        // Note: Application.Quit() won’t work in the editor.
+        // Note: Application.Quit() won't work in the editor.
         // It only works in a built game.
+    }
+
+    // Called when Games History Button is clicked
+    public void OpenGamesHistory()
+    {
+        SceneManager.LoadScene("GamesHistory");
     }
 }

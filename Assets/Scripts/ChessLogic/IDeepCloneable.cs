@@ -1,6 +1,6 @@
 ﻿namespace ChessSharp;
 
-interface IDeepCloneable<T>
+public interface IDeepCloneable<T>
 {
     T DeepClone();
 }

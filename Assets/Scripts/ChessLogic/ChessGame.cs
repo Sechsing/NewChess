@@ -17,6 +17,9 @@ public class ChessGame : IDeepCloneable<ChessGame>
     /// <summary>Gets a list of the game moves.</summary>
     public List<Move> Moves { get; private set; } // TODO: BAD! Investigate why the class consumer would even need this. Make it a private field if appropriate. And make it some kind of interface (`IEnumerable` for example).
 
+    /// <summary>Gets a list of all game actions (moves and fires) in order.</summary>
+    public List<IGameAction> Actions { get; private set; }
+
     /// <summary>Gets a 2D array of <see cref="Piece"/>s in the board.</summary>
     public Piece?[][] Board { get; private set; } // TODO: It's bad idea to expose this to public.
 
@@ -36,6 +39,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
     public ChessGame()
     {
         Moves = new List<Move>();
+        Actions = new List<IGameAction>();
         var whitePawn = new Pawn(Player.White);
         var whiteRook = new Rook(Player.White);
         var whiteKnight = new Knight(Player.White);
@@ -141,6 +145,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
         Board[(int) move.Source.Rank][(int) move.Source.File] = null;
         Board[(int) move.Destination.Rank][(int) move.Destination.File] = piece;
         Moves.Add(move);
+        Actions.Add(move);
         WhoseTurn = ChessUtilities.RevertPlayer(move.Player);
         SetGameState();
         return true;
@@ -164,6 +169,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
 
         // Destroy the piece on target square
         Board[(int)fire.Target.Rank][(int)fire.Target.File] = null;
+        Actions.Add(fire);
 
         WhoseTurn = ChessUtilities.RevertPlayer(fire.Player);
         SetGameState();
@@ -354,6 +360,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
         {
             Board = Board.Select(row => row.ToArray()).ToArray(),
             Moves = Moves.Select(m => m.DeepClone()).ToList(),
+            Actions = Actions.Select(a => a.DeepClone()).ToList(),
             GameState = GameState,
             WhoseTurn = WhoseTurn,
             CanBlackCastleKingSide = CanBlackCastleKingSide,

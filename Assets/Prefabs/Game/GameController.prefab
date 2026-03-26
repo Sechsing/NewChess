@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7513164665095641217
+--- !u!1 &3023269530857640993
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3801511249641577609}
-  - component: {fileID: 6088479478466251533}
+  - component: {fileID: 8171256677035245050}
+  - component: {fileID: 2035301836295532166}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3801511249641577609
+--- !u!4 &8171256677035245050
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513164665095641217}
+  m_GameObject: {fileID: 3023269530857640993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.0194649, y: 1.0591377, z: -0.10212168}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -26.99062, y: 32.87755, z: -4.1276617}
+  m_LocalScale: {x: 0.5444434, y: 0.5444434, z: 0.5444434}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6088479478466251533
+--- !u!114 &2035301836295532166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513164665095641217}
+  m_GameObject: {fileID: 3023269530857640993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04862b22c16b98949985abe159478651, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ec9e094df414a94892f3234223344bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boardManager: {fileID: 0}
+  boardInputHandler: {fileID: 0}
+  moveRecordPanel: {fileID: 0}
+  undoButton: {fileID: 0}

@@ -386,4 +386,10 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+
+    public void RestoreGame(ChessGame snapshot)
+    {
+        game = snapshot;
+        UpdateBoardByGameState();
+    }
 }
