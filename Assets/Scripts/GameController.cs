@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public BoardInputHandler boardInputHandler;
     public MoveRecordPanel moveRecordPanel;
     public Button undoButton;
+    public GameOverPanel gameOverPanel;
 
     private ChessGame snapshot;
 
@@ -42,11 +43,19 @@ public class GameController : MonoBehaviour
                 moveRecordPanel.AddEntry($"{actions.Count}. {player}: {notation}");
         }
 
-        if (boardManager.game.GameState != GameState.NotCompleted)
+        if (boardManager.game.GameState != GameState.NotCompleted
+            && boardManager.game.GameState != GameState.WhiteInCheck
+            && boardManager.game.GameState != GameState.BlackInCheck)
         {
             GameRecord record = GameRecord.FromGame(boardManager.game);
             GameStorage.SaveGame(record);
             Debug.Log($"Game saved. State: {boardManager.game.GameState}");
+
+            if (gameOverPanel != null)
+                gameOverPanel.Show(boardManager.game.GameState);
+
+            if (undoButton != null)
+                undoButton.interactable = false;
         }
     }
 
