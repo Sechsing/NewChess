@@ -47,6 +47,27 @@ public static class ChessUtilities
         return validMoves;
     }
 
+    internal static bool HasAnyValidMove(ChessGame board)
+    {
+        _ = board ?? throw new ArgumentNullException(nameof(board));
+
+        Player player = board.WhoseTurn;
+        IEnumerable<Square> playerOwnedSquares = s_allSquares.Where(sq => board[sq.File, sq.Rank]?.Owner == player);
+        Square[] nonPlayerOwnedSquares = s_allSquares.Where(sq => board[sq.File, sq.Rank]?.Owner != player).ToArray();
+
+        foreach (Square playerOwnedSquare in playerOwnedSquares)
+        {
+            foreach (Square target in nonPlayerOwnedSquares)
+            {
+                var move = new Move(playerOwnedSquare, target, player);
+                if (ChessGame.IsValidMove(move, board))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     /// <summary>Gets the valid moves of the given <see cref="ChessGame"/> that has a specific given source <see cref="Square"/>.</summary>
     /// <param name="source">The source <see cref="Square"/> that you're looking for its valid moves.</param>
     /// <param name="board">The <see cref="ChessGame"/> that you want to get its valid moves from the specified square.</param>

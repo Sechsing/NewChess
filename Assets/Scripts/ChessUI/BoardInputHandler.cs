@@ -126,6 +126,7 @@ public class BoardInputHandler : MonoBehaviour
             }
 
             // Regular move
+            if (piece == null) return;
             Move move = new Move(source, target, currentPlayer);
             gameController?.OnBeforeAction();
             if (boardManager.game.MakeMove(move, false))

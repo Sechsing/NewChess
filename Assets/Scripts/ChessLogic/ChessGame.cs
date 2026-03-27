@@ -257,7 +257,7 @@ public class ChessGame : IDeepCloneable<ChessGame>
         Player opponent = WhoseTurn;
         Player lastPlayer = ChessUtilities.RevertPlayer(opponent);
         bool isInCheck = ChessUtilities.IsPlayerInCheck(opponent, this);
-        var hasValidMoves = ChessUtilities.GetValidMoves(this).Count > 0;
+        var hasValidMoves = ChessUtilities.HasAnyValidMove(this);
 
         if (isInCheck && !hasValidMoves)
         {
@@ -359,8 +359,8 @@ public class ChessGame : IDeepCloneable<ChessGame>
         return new ChessGame
         {
             Board = Board.Select(row => row.ToArray()).ToArray(),
-            Moves = Moves.Select(m => m.DeepClone()).ToList(),
-            Actions = Actions.Select(a => a.DeepClone()).ToList(),
+            Moves = new List<Move>(Moves),
+            Actions = new List<IGameAction>(Actions),
             GameState = GameState,
             WhoseTurn = WhoseTurn,
             CanBlackCastleKingSide = CanBlackCastleKingSide,
